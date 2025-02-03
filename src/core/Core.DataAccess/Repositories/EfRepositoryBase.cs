@@ -43,7 +43,7 @@ public class EfRepositoryBase<TEntity, TId, TContext> : IRepository<TEntity, TId
     public TEntity Update(TEntity entity)
     {
         entity.UpdatedTime = DateTime.Now;
-        Context.Set<TEntity>().Remove(entity);
+        Context.Set<TEntity>().Update(entity);
         Context.SaveChanges();
         return entity;
     }

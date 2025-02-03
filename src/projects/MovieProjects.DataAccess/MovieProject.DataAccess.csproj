@@ -16,8 +16,4 @@
     <ProjectReference Include="..\MovieProject.Model\MovieProject.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>
