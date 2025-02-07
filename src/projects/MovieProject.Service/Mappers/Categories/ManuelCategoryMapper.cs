@@ -1,10 +1,11 @@
 ﻿using MovieProject.Model.Dtos.Categories;
 using MovieProject.Model.Entities;
 
-namespace MovieProject.Service.Mappers;
+namespace MovieProject.Service.Mappers.Categories;
 
-// Polymorfphism de classlar birbiri üzerinde dönüşüm sağlıyorsa -> dynamic polymorfphism
-public sealed class CategoryMapper
+// Polymorfphismde classlar birbiri üzerinde dönüşüm sağlıyorsa -> dynamic polymorfphism
+// Overloading -> static Polymorphism
+public sealed class ManuelCategoryMapper:ICategoryMapper
 {
 
     public Category ConvertToEntity(CategoryAddRequestDto dto)
