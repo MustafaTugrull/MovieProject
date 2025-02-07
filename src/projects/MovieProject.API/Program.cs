@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MovieProject.DataAccess.Contexts;
 using MovieProject.DataAccess.Repositories.Abstracts;
 using MovieProject.DataAccess.Repositories.Concretes;
@@ -24,7 +25,10 @@ builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<BaseDbContext>();
+builder.Services.AddDbContext<BaseDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
