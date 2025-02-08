@@ -6,6 +6,7 @@ using MovieProject.Model.Dtos.Movies;
 using MovieProject.Model.Entities;
 using MovieProject.Service.Abstracts;
 using MovieProject.Service.Helpers;
+using System.IO;
 
 namespace MovieProject.Service.Concretes;
 
@@ -36,7 +37,12 @@ public sealed class MovieService : IMovieService
 
     public void Delete(Guid id)
     {
-        throw new NotImplementedException();
+        var movie = _movieRepository.Get(x => x.Id == id, enableTracking: false);
+        if (movie is null)
+        {
+            //exception fırlat
+        }
+        _movieRepository.Delete(movie);
     }
 
     public List<MovieResponseDto> GetAll()
@@ -47,19 +53,24 @@ public sealed class MovieService : IMovieService
         //    .ToList();
 
 
-        var movies = _movieRepository.GetAll();
+        var movies = _movieRepository.GetAll(include: false);
         var response = _mapper.Map<List<MovieResponseDto>>(movies);
         return response;
     }
 
     public List<MovieResponseDto> GetAllByCategoryId(int id)
     {
-        throw new NotImplementedException();
+        var movies = _movieRepository.GetAll(filter: x => x.CategoryId == id, enableTracking: false);
+        var responses = _mapper.Map<List<MovieResponseDto>>(movies);
+        return responses;
     }
 
     public List<MovieResponseDto> GetAllByDirectorId(long id)
     {
-        throw new NotImplementedException();
+        var movies = _movieRepository.GetAll(filter: x => x.DirectorId == id, enableTracking: false);
+
+        var response = _mapper.Map<List<MovieResponseDto>>(movies);
+        return response;
     }
 
     public List<MovieResponseDto> GetAllByImdbRange(double min, double max)
