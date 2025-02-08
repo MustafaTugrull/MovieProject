@@ -5,33 +5,38 @@ using MovieProject.DataAccess.Repositories.Abstracts;
 using MovieProject.DataAccess.Contexts;
 using MovieProject.Model.Entities;
 using MovieProject.Service.Mappers.Categories;
-
+using Core.CrossCuttingConcerns.Exceptions;
+using MovieProject.Service.Constants.Categories;
+using MovieProject.Service.BusinessRules.Categories;
 namespace MovieProject.Service.Concretes;
 
 public sealed class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryMapper _categoryMapper;
+    private readonly CategoryBusinessRules _businessRules;
 
-    public CategoryService(ICategoryRepository categoryRepository, ICategoryMapper categoryMapper)
+    public CategoryService(ICategoryRepository categoryRepository, ICategoryMapper categoryMapper, CategoryBusinessRules businessRules)
     {
         _categoryRepository = categoryRepository;
         _categoryMapper = categoryMapper;
+        _businessRules = businessRules;
     }
 
     public void Add(CategoryAddRequestDto dto)
     {
+        // Validasyon kuralı
+
+        //iş kuralı
+        _businessRules.CategoryNameMustBeUnique(dto.Name);
         Category category = _categoryMapper.ConvertToEntity(dto);
         _categoryRepository.Add(category);
     }
 
     public void Delete(int id)
     {
+        _businessRules.CategoryIsPresent(id);
         var category = _categoryRepository.GetById(id);
-        if (category == null)
-        {
-            //todo : exception fırlat
-        }
         _categoryRepository.Delete(category!);
     }
 
@@ -44,11 +49,10 @@ public sealed class CategoryService : ICategoryService
 
     public CategoryResponseDto? GetById(int id)
     {
+        _businessRules.CategoryIsPresent(id);
+
         Category? category = _categoryRepository.GetById(id);
-        if (category is null)
-        {
-            //todo : exception fırlat
-        }
+
 
         CategoryResponseDto categoryResponseDto = _categoryMapper.ConvertToResponse(category);
         return categoryResponseDto;
@@ -56,12 +60,8 @@ public sealed class CategoryService : ICategoryService
 
     public void Update(CategoryUpdateRequestDto dto)
     {
+        _businessRules.CategoryIsPresent(dto.Id);
         Category? category = _categoryRepository.GetById(dto.Id);
-        if (category is null)
-        {
-            //todo : exception fırlat
-        }
-
         category.Name = dto.Name;
         _categoryRepository.Update(category);
     }
