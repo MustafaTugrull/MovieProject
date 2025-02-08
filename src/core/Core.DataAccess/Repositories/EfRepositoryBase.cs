@@ -1,24 +1,25 @@
 ﻿
 using Core.DataAccess.Enitities;
 using Microsoft.EntityFrameworkCore;
-
 namespace Core.DataAccess.Repositories;
 
-public class EfRepositoryBase<TEntity, TId, TContext> : IRepository<TEntity, TId>
+public abstract class EfRepositoryBase<TEntity, TId, TContext> : IRepository<TEntity, TId>
     where TEntity : Entity<TId>
     where TContext : DbContext
-{
 
+{
     protected TContext Context { get; }
+
+
     public EfRepositoryBase(TContext context)
     {
         Context = context;
     }
-
     public TEntity Add(TEntity entity)
     {
+
         entity.CreatedTime = DateTime.Now;
-        Context.Set<TEntity>().Add(entity);
+        Context.Add(entity);
         Context.SaveChanges();
         return entity;
     }
@@ -30,9 +31,18 @@ public class EfRepositoryBase<TEntity, TId, TContext> : IRepository<TEntity, TId
         return entity;
     }
 
-    public List<TEntity> GetAll()
+    public List<TEntity> GetAll(bool include = true)
     {
-        return Context.Set<TEntity>().ToList();
+        // SELECT [] FROM TENTITY WHERE [] ORDER BY []
+
+        IQueryable<TEntity> query = Context.Set<TEntity>();
+
+        if (include is false)
+        {
+            query = query.IgnoreAutoIncludes();
+        }
+
+        return query.ToList();
     }
 
     public TEntity? GetById(TId id)
@@ -46,5 +56,10 @@ public class EfRepositoryBase<TEntity, TId, TContext> : IRepository<TEntity, TId
         Context.Set<TEntity>().Update(entity);
         Context.SaveChanges();
         return entity;
+    }
+
+    public IQueryable<TEntity> Query()
+    {
+        return Context.Set<TEntity>();
     }
 }
