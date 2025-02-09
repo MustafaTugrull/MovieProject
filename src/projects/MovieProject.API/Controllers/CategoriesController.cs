@@ -1,10 +1,12 @@
-﻿using Core.CrossCuttingConcerns.Exceptions;
+﻿using Core.CrossCuttingConcerns.Exceptions.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieProject.Model.Dtos.Categories;
 using MovieProject.Service.Abstracts;
 using MovieProject.Service.Concretes;
 
+
+// RFC 7807
 namespace MovieProject.API.Controllers;
 
 [Route("api/[controller]")]
@@ -22,28 +24,12 @@ public class CategoriesController : ControllerBase
     // propert Injection
     //public ICategoryService CategoryService { get; set; }
 
-
-    // Method Injection
-    //[HttpPost("add")]
-    //public IActionResult Add(CategoryAddRequestDto dto, ICategoryService categoryService)
-    //{
-    //    _categoryService.Add(dto);
-    //    return Ok("Kategori başarıyla eklendi.");
-    //}
-
     [HttpPost("add")]
     public IActionResult Add(CategoryAddRequestDto dto)
     {
-        try
-        {
-            _categoryService.Add(dto);
-            return Ok("Kategori başarıyla eklendi.");
+        _categoryService.Add(dto);
+        return Ok("Kategori başarıyla eklendi.");
 
-        }
-        catch (BusinessException ex)
-        {
-            return BadRequest(ex.Message);
-        }
     }
 
     [HttpGet("getall")]
@@ -56,43 +42,22 @@ public class CategoriesController : ControllerBase
     [HttpGet("getbyid")]
     public IActionResult GetById(int id)
     {
-        try
-        {
-            var response = _categoryService.GetById(id);
-            return Ok(response);
-
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        var response = _categoryService.GetById(id);
+        return Ok(response);
     }
 
     [HttpPut("update")]
     public IActionResult Update(CategoryUpdateRequestDto dto)
     {
-        try
-        {
-            _categoryService.Update(dto);
-            return Ok("Kategori güncellendi.");
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        _categoryService.Update(dto);
+        return Ok("Kategori güncellendi.");
     }
 
     [HttpDelete("delete")]
     public IActionResult Delete(int id)
     {
-        try
-        {
-            _categoryService.Delete(id);
-            return Ok("Kategori silindi.");
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        _categoryService.Delete(id);
+        return Ok("Kategori silindi.");
     }
+
 }
