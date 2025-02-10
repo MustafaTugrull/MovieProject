@@ -14,7 +14,7 @@ public sealed record MovieResponseDto
 
     public DateTime PublishDate { get; init; }
 
-    public IFormFile? Image { get; init; }
+    public string? imageUrl { get; init; }
 
     public string? CategoryName { get; init; }
     public bool IsActive { get; init; }

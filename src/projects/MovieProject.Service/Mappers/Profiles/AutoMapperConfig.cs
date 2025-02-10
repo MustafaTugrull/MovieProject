@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MovieProject.Model.Dtos.Artists;
 using MovieProject.Model.Dtos.Categories;
 using MovieProject.Model.Dtos.Movies;
 using MovieProject.Model.Entities;
@@ -14,7 +15,12 @@ public sealed class AutoMapperConfig : Profile
         CreateMap<CategoryUpdateRequestDto, Category>();
         CreateMap<Category, CategoryResponseDto>();
 
+        CreateMap<MovieUpdateRequestDto, Movie>();
         CreateMap<MovieAddRequestDto, Movie>();
         CreateMap<Movie, MovieResponseDto>();
+
+        CreateMap<Artist, ArtistResponseDto>();
+        CreateMap<ArtistUpdateRequestDto, Artist>();
+        CreateMap<ArtistAddRequestDto, Artist>();
     }
 }

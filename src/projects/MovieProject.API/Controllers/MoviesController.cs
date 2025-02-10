@@ -18,32 +18,52 @@ public class MoviesController : ControllerBase
 
 
     [HttpPost("Add")]
-    public IActionResult Add(MovieAddRequestDto dto)
+    public async Task<IActionResult> Add(MovieAddRequestDto dto)
     {
-        var result = _movieService.Add(dto);
-
+        var result = await _movieService.AddAsync(dto);
         return Ok(result);
     }
 
 
     [HttpGet("getall")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var result = _movieService.GetAll();
+        var result = await _movieService.GetAllAsync();
         return Ok(result);
     }
 
     [HttpGet("getallbycategoryid")]
-    public IActionResult GetAllByCategoryId(int categoryId)
+    public async Task<IActionResult> GetAllByCategoryId(int categoryId)
     {
-        var result = _movieService.GetAllByCategoryId(categoryId);
+        var result = await _movieService.GetAllByCategoryIdAsync(categoryId);
         return Ok(result);
     }
 
     [HttpGet("getallbydirectoryid")]
-    public IActionResult GetAllByDirectorId(long directorId)
+    public async Task<IActionResult> GetAllByDirectorId(long directorId)
     {
-        var result = _movieService.GetAllByDirectorId(directorId);
+        var result = await _movieService.GetAllByDirectorIdAsync(directorId);
         return Ok(result);
     }
+
+    [HttpPut("update")]
+    public async Task<IActionResult> Update(MovieUpdateRequestDto dto)
+    {
+        await _movieService.UpdateAsync(dto);
+        return Ok();
+    }
+
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _movieService.DeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpGet("getbyid")]
+    public async Task<IActionResult> GetById(Guid id) => Ok(await _movieService.GetByIdAsync(id));
+
+    [HttpGet("imdbrange")]
+    public async Task<IActionResult> GetAllByImdbRangeAsync(double min, double max) => Ok(await _movieService.GetAllByImdbRangeAsync(min, max));
+
 }
