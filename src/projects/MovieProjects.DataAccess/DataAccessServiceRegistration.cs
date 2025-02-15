@@ -17,6 +17,9 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IMovieArtistRepository, MovieArtistRepository>();
         services.AddScoped<IDirectoryRepository, DirectorRepository>();
 
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
         services.AddDbContext<BaseDbContext>(opt =>
         {
