@@ -47,9 +47,8 @@ public sealed class UserService(IUserRepository userRepository, UserBusinessRule
 
     public async Task<UserResponseDto> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        await businessRules.EmailMustBeUniqueAsync(email);
 
-        var user = await userRepository.GetAsync(filter: x => x.Email == email, enableTracking: false, cancellationToken: cancellationToken);
+        var user = await userRepository.GetAsync(filter: x => x.Email == email, include: false, enableTracking: false, cancellationToken: cancellationToken);
 
         var response = mapper.Map<UserResponseDto>(user);
 

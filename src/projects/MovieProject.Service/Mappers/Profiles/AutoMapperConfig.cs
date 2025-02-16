@@ -26,5 +26,6 @@ public sealed class AutoMapperConfig : Profile
         CreateMap<ArtistAddRequestDto, Artist>();
 
         CreateMap<User, UserResponseDto>();
+        CreateMap<RegisterRequestDto, User>();
     }
 }
